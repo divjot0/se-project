@@ -14,8 +14,14 @@ Including another URLconf
     2. Add a URL to urlpatterns:  path('blog/', include('blog.urls'))
 """
 from django.contrib import admin
-from django.urls import path
+from django.urls import path, include, register_converter
+from home.views import home_page
 
+from barcodelookup import converter
+
+register_converter(converter.BarcodeConverter, 'ean')
 urlpatterns = [
     path('admin/', admin.site.urls),
+    path('lookup/<ean:barcode>', include('barcodelookup.urls')),
+    path('', home_page),
 ]
